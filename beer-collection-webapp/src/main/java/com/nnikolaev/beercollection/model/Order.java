@@ -1,13 +1,14 @@
 package com.nnikolaev.beercollection.model;
 
+import com.nnikolaev.beercollection.model.enums.OrderStatus;
 import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
 @Table(name = "orders")
-public class Order {
-    @Id
-    private Integer id;
+public class Order extends AuditableModel {
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
     private User user;
 
     @ManyToMany
@@ -17,4 +18,11 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "box_id")
     )
     private Set<Box> boxes = new HashSet<>();
+
+    protected Order() { }
+
+    public OrderStatus getStatus() { return this.status; }
+    public void setStatus(OrderStatus status) { this.status = status; }
+
+    public Set<Box> getBoxes() { return Collections.unmodifiableSet(this.boxes); }
 }
