@@ -18,10 +18,11 @@ public abstract class AuditableModel {
     @Column(columnDefinition = "uniqueidentifier")
     private UUID id;
     @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
     @LastModifiedDate
     private Instant updatedAt;
-    private Boolean deleted;
+    private Instant deletedAt;
 
     public UUID getId() { return this.id; }
 
@@ -30,6 +31,7 @@ public abstract class AuditableModel {
     public Instant getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(Instant updatedAt) { this.updatedAt = updatedAt; }
 
-    public Boolean isDeleted() { return this.deleted; }
-    public void setDeleted(Boolean isDeleted) { this.deleted = isDeleted; }
+    public Instant isDeleted() { return this.deletedAt; }
+    public void setDeletedAt(Instant deletedAt) { this.deletedAt = deletedAt; }
+
 }

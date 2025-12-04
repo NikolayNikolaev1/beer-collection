@@ -12,7 +12,8 @@ public class User extends AuditableModel {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    private Set<Order> orders = new HashSet<Order>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Order> orders = new HashSet<>();
 
     protected User() { }
 
