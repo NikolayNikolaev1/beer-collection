@@ -1,62 +1,85 @@
 package com.nnikolaev.beercollection.security;
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
-import java.util.Date;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class JwtTokenProvider {
-    // TODO: Try autowired
-    private final Key secretKey;
-    private final long jwtValidityInMillis;
+    private final Map<String, Instant> blacklist = new ConcurrentHashMap<>();
+    @Autowired
+    @Value("${jwt.secret}")
+    private String secretKey;
+    @Autowired
+    @Value("${jwt.expiration-in-ms}")
+    private long jwtValidityInMillis;
 
-    public JwtTokenProvider(
-            @Value("${jwt.secret}") String jwtSecret,
-            @Value("${jwt.expiration-in-ms}") long jwtValidityInMillis) {
-        this.secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes());
-        this.jwtValidityInMillis = jwtValidityInMillis;
-    }
 
     public String generateToken(String email) {
-        Date now = new Date();
-        Date expiry = new Date(now.getTime() + this.jwtValidityInMillis);
+        final Date now = new Date();
+        final Date expiry = new Date(now.getTime() + this.jwtValidityInMillis);
 
         return Jwts.builder()
-                .setSubject(email)
-                .setIssuedAt(now)
-                .setExpiration(expiry)
-                // optionally add claims, roles etc.
-                .signWith(this.secretKey, SignatureAlgorithm.HS256)
+                .subject(email)
+                .issuedAt(now)
+                .expiration(expiry)
+                .signWith(getSignInKey())
                 .compact();
     }
 
     public String getEmailFromToken(String token) {
-        return parseClaims(token).getBody().getSubject();
+        return parseClaims(token).getSubject();
+    }
+
+    public Instant getExpiryFromToken(String token) {
+        return parseClaims(token).getExpiration().toInstant();
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser()
-                    .setSigningKey(this.secretKey)
-                    .build()
-                    .parseClaimsJws(token);
+            this.parseClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            // log token invalidity
             return false;
         }
     }
 
-    private Jws<Claims> parseClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(this.secretKey)
-                .build()
-                .parseClaimsJws(token);
+    public boolean isBlacklisted(String token) {
+        Instant exp = blacklist.get(token);
+        if (exp == null) return false;
+
+        if (Instant.now().isAfter(exp)) {
+            blacklist.remove(token);
+            return false;
+        }
+
+        return true;
     }
+
+    public void blacklistToken(String token) {
+        final Instant expiry = this.getExpiryFromToken(token);
+        blacklist.put(token, expiry);
+    }
+
+    private Claims parseClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(this.getSignInKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+    private SecretKey getSignInKey() {
+        final byte[] bytes = Base64.getDecoder()
+                .decode(this.secretKey.getBytes(StandardCharsets.UTF_8));
+        return new SecretKeySpec(bytes, "HmacSHA256"); }
 
     // TODO: Add blacklistToken for logout
 }

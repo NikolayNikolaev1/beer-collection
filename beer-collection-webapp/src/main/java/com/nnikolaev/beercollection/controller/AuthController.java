@@ -10,20 +10,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.nnikolaev.beercollection.common.Constant.Route;
+
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(Route.AUTH_PREFIX)
 public class AuthController {
     @Autowired
     private AuthService authService;
 
-    @PostMapping("/register")
+    @PostMapping(Route.REGISTER)
     public ResponseEntity<?> register(@Valid @RequestBody AuthRequest req) {
         return ResponseHandler.success(authService.register(req));
     }
 
-    @PostMapping("/login")
+    @PostMapping(Route.LOGIN)
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest req)
             throws UserNotFoundException {
         return ResponseHandler.success(authService.login(req));
+    }
+
+    @PostMapping(Route.LOGOUT)
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader) {
+        return ResponseHandler.success(authService.logout(authHeader));
     }
 }

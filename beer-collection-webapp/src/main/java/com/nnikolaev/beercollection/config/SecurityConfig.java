@@ -17,6 +17,8 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import static com.nnikolaev.beercollection.common.Constant.Route;
+
 @Configuration
 public class SecurityConfig {
     @Autowired
@@ -40,8 +42,10 @@ public class SecurityConfig {
                 )
                 // authorize requests
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(new AntPathRequestMatcher("/auth/**")).permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers(Route.AUTH_PREFIX + "/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
                 )
                 // register the authentication provider
                 .authenticationProvider(authenticationProvider())
