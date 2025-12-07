@@ -1,18 +1,14 @@
 package com.nnikolaev.beercollection.controller;
 
-import com.nnikolaev.beercollection.dto.AuthRequestDto;
+import com.nnikolaev.beercollection.dto.request.AuthRequest;
+import com.nnikolaev.beercollection.dto.response.AuthResponse;
 import com.nnikolaev.beercollection.exception.UserNotFoundException;
+import com.nnikolaev.beercollection.security.ResponseHandler;
 import com.nnikolaev.beercollection.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -21,16 +17,13 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody AuthRequestDto req) {
-        authService.register(req);
-        return ResponseEntity.ok("User registered successfully");
+    public ResponseEntity<?> register(@Valid @RequestBody AuthRequest req) {
+        return ResponseHandler.success(authService.register(req));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody AuthRequestDto req)
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest req)
             throws UserNotFoundException {
-        authService.login(req);
-        // Here you could generate JWT or return session info if using cookies
-        return ResponseEntity.ok("User logged in successfully");
+        return ResponseHandler.success(authService.login(req));
     }
 }

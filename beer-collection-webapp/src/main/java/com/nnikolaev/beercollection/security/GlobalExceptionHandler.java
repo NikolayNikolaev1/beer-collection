@@ -1,15 +1,18 @@
 package com.nnikolaev.beercollection.security;
 
-import com.nnikolaev.beercollection.exception.EmailAlreadyUsedException;
-import com.nnikolaev.beercollection.exception.UserNotFoundException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import com.nnikolaev.beercollection.dto.ErrorResponse;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import com.nnikolaev.beercollection.dto.response.error.ValidationErrorResponse;
+
+import com.nnikolaev.beercollection.dto.response.error.*;
+import com.nnikolaev.beercollection.exception.*;
+import org.springframework.http.*;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -20,21 +23,65 @@ public class GlobalExceptionHandler {
                 "Conflict",
                 ex.getMessage(),
                 LocalDateTime.now(),
-                request.getDescription(false)  // e.g. URI path
+                request.getDescription(false)
 
         );
-        return ResponseEntity.badRequest().body(err);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleAuth(UserNotFoundException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponse> handleNotFound(UserNotFoundException ex, WebRequest request) {
         ErrorResponse err = new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
                 "Not Found",
                 ex.getMessage(),
                 LocalDateTime.now(),
-                request.getDescription(false)  // e.g. URI path
+                request.getDescription(false)
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ValidationErrorResponse> handleValidationExceptions(
+            MethodArgumentNotValidException ex, WebRequest request) {
+
+        Set<Violation> violations = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(err -> new Violation(err.getField(), err.getDefaultMessage()))
+                .collect(Collectors.toSet());
+
+        ValidationErrorResponse errorResponse = new ValidationErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "Validation failed",
+                violations,
+                request.getDescription(false)
+        );
+
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFound(NoHandlerFoundException ex, WebRequest req) {
+        ErrorResponse err = new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
+                "Resource not found: " + req.getDescription(false),
+                LocalDateTime.now(),
+                req.getDescription(false)
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleAll(Exception ex, WebRequest request) {
+        ErrorResponse error = new ErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Internal Server Error",
+                "An unexpected error occurred",
+                LocalDateTime.now(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

@@ -1,15 +1,16 @@
 package com.nnikolaev.beercollection.service;
 
-import com.nnikolaev.beercollection.dto.AuthRequestDto;
-import com.nnikolaev.beercollection.exception.UserNotFoundException;
+import com.nnikolaev.beercollection.dto.request.AuthRequest;
+import com.nnikolaev.beercollection.dto.response.AuthResponse;
+import com.nnikolaev.beercollection.exception.*;
 import com.nnikolaev.beercollection.model.User;
 import com.nnikolaev.beercollection.model.enums.UserRole;
 import com.nnikolaev.beercollection.repository.UserRepository;
 import com.nnikolaev.beercollection.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class AuthService {
@@ -22,27 +23,31 @@ public class AuthService {
 
     // maybe a TokenProvider for JWTs, and a token blacklist store if you plan logout
 
-    public void register(AuthRequestDto requestDto) {
-        if (userRepository.findByEmail(requestDto.email).isPresent()) {
-//            throw new EmailAlreadyUsedException("Email is already taken");
-        }
+    public Void register(AuthRequest requestDto) throws EmailAlreadyUsedException {
+        final boolean emailExists = userRepository.findByEmail(requestDto.email()).isPresent();
 
-        String hashedPassword = passwordEncoder.encode(requestDto.password);
+        if (emailExists) throw new EmailAlreadyUsedException();
 
-        User user = new User(requestDto.email, hashedPassword, UserRole.END_USER);
+        final String hashedPassword = passwordEncoder.encode(requestDto.password());
+        final User user = new User(requestDto.email(), hashedPassword, UserRole.END_USER);
+
         userRepository.save(user);
+
+        return null;
     }
 
-    public String login(AuthRequestDto requestDto) throws UserNotFoundException {
+    public AuthResponse login(AuthRequest requestDto) throws UserNotFoundException {
         final User user = userRepository
-                .findByEmail(requestDto.email)
+                .findByEmail(requestDto.email())
                 .orElseThrow(UserNotFoundException::new);
 
-        final boolean passwordMatch = passwordEncoder.matches(requestDto.password, user.getPassword());
+        final boolean passwordMatch = passwordEncoder.matches(requestDto.password(), user.getPassword());
 
         if (!passwordMatch) throw new UserNotFoundException();
 
-        return this.tokenProvider.generateToken(user.getEmail());
+        final String token = this.tokenProvider.generateToken(user.getEmail());
+
+        return new AuthResponse(user.getEmail(), token);
     }
 
     // TODO: Add logout
