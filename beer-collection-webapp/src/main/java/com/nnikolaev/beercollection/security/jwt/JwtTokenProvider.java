@@ -1,4 +1,4 @@
-package com.nnikolaev.beercollection.security;
+package com.nnikolaev.beercollection.security.jwt;
 
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.*;
@@ -22,12 +22,15 @@ public class JwtTokenProvider {
     private long jwtValidityInMillis;
 
 
-    public String generateToken(String email) {
+    public String generateToken(String email, String roleName) {
         final Date now = new Date();
         final Date expiry = new Date(now.getTime() + this.jwtValidityInMillis);
 
-        return Jwts.builder()
+
+        return Jwts
+                .builder()
                 .subject(email)
+                .claim("role", roleName)
                 .issuedAt(now)
                 .expiration(expiry)
                 .signWith(getSignInKey())
@@ -79,7 +82,8 @@ public class JwtTokenProvider {
     private SecretKey getSignInKey() {
         final byte[] bytes = Base64.getDecoder()
                 .decode(this.secretKey.getBytes(StandardCharsets.UTF_8));
-        return new SecretKeySpec(bytes, "HmacSHA256"); }
+        return new SecretKeySpec(bytes, "HmacSHA256");
+    }
 
     // TODO: Add blacklistToken for logout
 }

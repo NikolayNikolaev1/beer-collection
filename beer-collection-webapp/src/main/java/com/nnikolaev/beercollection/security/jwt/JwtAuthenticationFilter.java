@@ -1,5 +1,6 @@
-package com.nnikolaev.beercollection.security;
+package com.nnikolaev.beercollection.security.jwt;
 
+import com.nnikolaev.beercollection.security.CustomUserDetails;
 import com.nnikolaev.beercollection.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -6,12 +6,10 @@ import com.nnikolaev.beercollection.exception.*;
 import com.nnikolaev.beercollection.model.User;
 import com.nnikolaev.beercollection.model.enums.UserRole;
 import com.nnikolaev.beercollection.repository.UserRepository;
-import com.nnikolaev.beercollection.security.JwtTokenProvider;
+import com.nnikolaev.beercollection.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
 
 
 @Service
@@ -47,7 +45,8 @@ public class AuthService {
 
         if (!passwordMatch) throw new UserNotFoundException();
 
-        final String token = this.tokenProvider.generateToken(user.getEmail());
+        final String token = this.tokenProvider
+                .generateToken(user.getEmail(), user.getRole().toString());
 
         return new AuthResponse(user.getEmail(), token);
     }

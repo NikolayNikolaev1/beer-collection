@@ -2,6 +2,7 @@ package com.nnikolaev.beercollection.security;
 
 import com.nnikolaev.beercollection.model.User;
 
+import com.nnikolaev.beercollection.model.enums.UserRole;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,8 +18,8 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // if you have roles, map them here; for simplicity assume ROLE_USER
-        return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+        UserRole role = this.user.getRole();
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE" + role.toString()));
     }
 
     @Override
@@ -27,17 +28,27 @@ public class CustomUserDetails implements UserDetails {
     }
 
     @Override
-    public String getUsername() { return user.getEmail(); }
+    public String getUsername() {
+        return user.getEmail();
+    }
 
     @Override
-    public boolean isAccountNonExpired() { return true; }
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
     @Override
-    public boolean isAccountNonLocked() { return true; }
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
     @Override
-    public boolean isCredentialsNonExpired() { return true; }
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
     @Override
-    public boolean isEnabled() { return true; }
+    public boolean isEnabled() {
+        return true;
+    }
 }
