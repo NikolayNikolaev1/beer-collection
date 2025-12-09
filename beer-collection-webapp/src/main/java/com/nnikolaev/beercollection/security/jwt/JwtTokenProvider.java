@@ -11,21 +11,21 @@ import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.nnikolaev.beercollection.common.Constant.AppConfigValue;
+
 @Component
 public class JwtTokenProvider {
     private final Map<String, Instant> blacklist = new ConcurrentHashMap<>();
     @Autowired
-    @Value("${jwt.secret}")
+    @Value(AppConfigValue.JWT_SECRET)
     private String secretKey;
     @Autowired
-    @Value("${jwt.expiration-in-ms}")
+    @Value(AppConfigValue.JWT_EXPIRATION_MS)
     private long jwtValidityInMillis;
-
 
     public String generateToken(String email, String roleName) {
         final Date now = new Date();
         final Date expiry = new Date(now.getTime() + this.jwtValidityInMillis);
-
 
         return Jwts
                 .builder()
@@ -84,6 +84,4 @@ public class JwtTokenProvider {
                 .decode(this.secretKey.getBytes(StandardCharsets.UTF_8));
         return new SecretKeySpec(bytes, "HmacSHA256");
     }
-
-    // TODO: Add blacklistToken for logout
 }

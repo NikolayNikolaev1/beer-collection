@@ -11,9 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class AuthService {
+    @Autowired
+    private UserService userService;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -21,27 +22,26 @@ public class AuthService {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
-    // maybe a TokenProvider for JWTs, and a token blacklist store if you plan logout
-
-    public Void register(AuthRequest requestDto) throws EmailAlreadyUsedException {
-        final boolean emailExists = userRepository.findByEmail(requestDto.email()).isPresent();
-
-        if (emailExists) throw new EmailAlreadyUsedException();
-
-        final String hashedPassword = passwordEncoder.encode(requestDto.password());
-        final User user = new User(requestDto.email(), hashedPassword, UserRole.END_USER);
-
-        userRepository.save(user);
+    public Void register(AuthRequest requestDto) {
+        this.userService.create(requestDto.email(), requestDto.password(), UserRole.END_USER);
+//        final boolean emailExists = this.userRepository.findByEmail(requestDto.email()).isPresent();
+//
+//        if (emailExists) throw new EmailAlreadyUsedException();
+//
+//        final String hashedPassword = this.passwordEncoder.encode(requestDto.password());
+//        final User user = new User(requestDto.email(), hashedPassword, UserRole.END_USER);
+//
+//        this.userRepository.save(user);
 
         return null;
     }
 
-    public AuthResponse login(AuthRequest requestDto) throws UserNotFoundException {
-        final User user = userRepository
+    public AuthResponse login(AuthRequest requestDto) {
+        final User user = this.userRepository
                 .findByEmail(requestDto.email())
                 .orElseThrow(UserNotFoundException::new);
 
-        final boolean passwordMatch = passwordEncoder.matches(requestDto.password(), user.getPassword());
+        final boolean passwordMatch = this.passwordEncoder.matches(requestDto.password(), user.getPassword());
 
         if (!passwordMatch) throw new UserNotFoundException();
 

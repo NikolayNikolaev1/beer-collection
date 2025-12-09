@@ -1,6 +1,13 @@
 package com.nnikolaev.beercollection.common;
 
 public class Constant {
+    public static class AppConfigValue {
+        public static final String ADMIN_EMAIL = "${app.admin.email}";
+        public static final String ADMIN_PASSWORD = "${app.admin.password}";
+        public static final String JWT_SECRET = "${jwt.secret}";
+        public static final String JWT_EXPIRATION_MS = "${jwt.expiration-in-ms}";
+    }
+
     public static class Route {
         public static final String API_PREFIX = "/api";
         public static final String AUTH_PREFIX = API_PREFIX + "/auth";
