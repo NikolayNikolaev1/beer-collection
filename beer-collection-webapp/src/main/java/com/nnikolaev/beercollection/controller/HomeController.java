@@ -18,7 +18,7 @@ public class HomeController {
         return ResponseEntity.ok("");
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/test")
     public ResponseEntity<?> test() {
         return ResponseEntity.ok("");

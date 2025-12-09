@@ -5,11 +5,13 @@ import com.nnikolaev.beercollection.dto.response.error.ValidationErrorResponse;
 import com.nnikolaev.beercollection.dto.response.error.*;
 import com.nnikolaev.beercollection.exception.*;
 import org.springframework.http.*;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,12 +35,25 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleNotFound(UserNotFoundException ex, WebRequest request) {
         ErrorResponse err = new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
-                "Not Found",
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
                 ex.getMessage(),
                 LocalDateTime.now(),
                 request.getDescription(false)
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    @ExceptionHandler({AccessDeniedException.class, AuthorizationDeniedException.class})
+    public ResponseEntity<ErrorResponse> handleAccessDenied(Exception ex, WebRequest request) {
+        ErrorResponse err = new ErrorResponse(
+                HttpStatus.FORBIDDEN.value(),
+                HttpStatus.FORBIDDEN.getReasonPhrase(),
+                ex.getMessage(),
+                LocalDateTime.now(),
+                request.getDescription(false)
+        );
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
