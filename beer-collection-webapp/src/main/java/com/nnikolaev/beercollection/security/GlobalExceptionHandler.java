@@ -3,7 +3,9 @@ package com.nnikolaev.beercollection.security;
 import com.nnikolaev.beercollection.dto.response.error.ValidationErrorResponse;
 
 import com.nnikolaev.beercollection.dto.response.error.*;
-import com.nnikolaev.beercollection.exception.*;
+import com.nnikolaev.beercollection.exception.company.CompanyExistsException;
+import com.nnikolaev.beercollection.exception.user.UserExistsException;
+import com.nnikolaev.beercollection.exception.user.UserNotFoundException;
 import org.springframework.http.*;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;

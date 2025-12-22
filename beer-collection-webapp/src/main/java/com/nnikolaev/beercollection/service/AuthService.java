@@ -2,7 +2,7 @@ package com.nnikolaev.beercollection.service;
 
 import com.nnikolaev.beercollection.dto.request.AuthRequest;
 import com.nnikolaev.beercollection.dto.response.AuthResponse;
-import com.nnikolaev.beercollection.exception.*;
+import com.nnikolaev.beercollection.exception.user.UserNotFoundException;
 import com.nnikolaev.beercollection.model.User;
 import com.nnikolaev.beercollection.model.enums.UserRole;
 import com.nnikolaev.beercollection.repository.UserRepository;

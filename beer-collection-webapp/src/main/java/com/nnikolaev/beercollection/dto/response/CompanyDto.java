@@ -7,5 +7,5 @@ public record CompanyDto(
         UUID Id,
         String name,
         String description,
-        Instant modified_at) {
+        Instant modifiedAt) {
 }

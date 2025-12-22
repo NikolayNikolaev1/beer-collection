@@ -1,4 +1,4 @@
-package com.nnikolaev.beercollection.exception;
+package com.nnikolaev.beercollection.exception.company;
 
 public class CompanyExistsException extends RuntimeException {
     private static final String ERROR_MESSAGE = "Company with provided name already exists.";

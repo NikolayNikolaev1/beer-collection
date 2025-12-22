@@ -2,7 +2,7 @@ package com.nnikolaev.beercollection.controller;
 
 import com.nnikolaev.beercollection.dto.request.AuthRequest;
 import com.nnikolaev.beercollection.dto.response.AuthResponse;
-import com.nnikolaev.beercollection.exception.UserNotFoundException;
+import com.nnikolaev.beercollection.exception.user.UserNotFoundException;
 import com.nnikolaev.beercollection.security.ResponseHandler;
 import com.nnikolaev.beercollection.service.AuthService;
 import jakarta.validation.Valid;

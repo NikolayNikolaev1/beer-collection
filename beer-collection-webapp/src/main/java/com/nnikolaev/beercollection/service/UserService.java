@@ -1,6 +1,6 @@
 package com.nnikolaev.beercollection.service;
 
-import com.nnikolaev.beercollection.exception.UserExistsException;
+import com.nnikolaev.beercollection.exception.user.UserExistsException;
 import com.nnikolaev.beercollection.model.User;
 import com.nnikolaev.beercollection.model.enums.UserRole;
 import com.nnikolaev.beercollection.repository.UserRepository;

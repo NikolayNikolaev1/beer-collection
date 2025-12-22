@@ -1,4 +1,4 @@
-package com.nnikolaev.beercollection.exception;
+package com.nnikolaev.beercollection.exception.user;
 
 public class UserExistsException extends RuntimeException {
     private static final String ERROR_MESSAGE = "User with email already exists in database.";
