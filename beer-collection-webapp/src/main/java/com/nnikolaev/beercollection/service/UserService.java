@@ -16,7 +16,8 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void create(String email, String password, UserRole role) {
+    public void create(String email, String password, UserRole role)
+            throws EmailAlreadyUsedException {
         final boolean emailExists = this.userRepository.findByEmail(email).isPresent();
 
         if (emailExists) throw new EmailAlreadyUsedException();

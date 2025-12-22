@@ -1,6 +1,5 @@
 package com.nnikolaev.beercollection.model.seed;
 
-import com.nnikolaev.beercollection.exception.EmailAlreadyUsedException;
 import com.nnikolaev.beercollection.model.enums.UserRole;
 import com.nnikolaev.beercollection.repository.UserRepository;
 import com.nnikolaev.beercollection.service.UserService;
@@ -22,7 +21,7 @@ public class AdminSeeder implements CommandLineRunner {
     private String adminPassword;
 
     @Override
-    public void run(String... args) throws EmailAlreadyUsedException {
+    public void run(String... args) {
         boolean adminExists = this.userRepository.existsByRole(UserRole.ADMIN);
 
         if (adminExists) return;
