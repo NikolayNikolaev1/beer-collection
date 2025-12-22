@@ -1,13 +1,13 @@
 package com.nnikolaev.beercollection.exception;
 
-public class EmailAlreadyUsedException extends RuntimeException {
+public class UserExistsException extends RuntimeException {
     private static final String ERROR_MESSAGE = "User with email already exists in database.";
 
-    public EmailAlreadyUsedException() {
+    public UserExistsException() {
         this(ERROR_MESSAGE);
     }
 
-    public EmailAlreadyUsedException(String message) {
+    public UserExistsException(String message) {
         super(message);
     }
 }

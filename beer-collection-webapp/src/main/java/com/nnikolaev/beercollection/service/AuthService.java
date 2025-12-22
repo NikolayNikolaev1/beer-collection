@@ -24,14 +24,6 @@ public class AuthService {
 
     public Void register(AuthRequest requestDto) {
         this.userService.create(requestDto.email(), requestDto.password(), UserRole.END_USER);
-//        final boolean emailExists = this.userRepository.findByEmail(requestDto.email()).isPresent();
-//
-//        if (emailExists) throw new EmailAlreadyUsedException();
-//
-//        final String hashedPassword = this.passwordEncoder.encode(requestDto.password());
-//        final User user = new User(requestDto.email(), hashedPassword, UserRole.END_USER);
-//
-//        this.userRepository.save(user);
 
         return null;
     }

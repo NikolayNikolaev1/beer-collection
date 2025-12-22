@@ -33,7 +33,7 @@ public class JwtTokenProvider {
                 .claim("role", roleName)
                 .issuedAt(now)
                 .expiration(expiry)
-                .signWith(getSignInKey())
+                .signWith(this.getSignInKey())
                 .compact();
     }
 

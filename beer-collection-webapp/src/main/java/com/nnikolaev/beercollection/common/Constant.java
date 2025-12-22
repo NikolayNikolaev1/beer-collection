@@ -12,8 +12,13 @@ public class Constant {
         public static final String API_PREFIX = "/api";
         public static final String AUTH_PREFIX = API_PREFIX + "/auth";
         public static final String ADMIN_PREFIX = API_PREFIX + "/admin";
+        public static final String COMPANY_PREFIX = API_PREFIX + "/company";
         public static final String LOGIN = "/login";
         public static final String LOGOUT = "/logout";
         public static final String REGISTER = "/register";
+
+        public static class Company {
+            public static final String CREATE = COMPANY_PREFIX + "/create";
+        }
     }
 }
