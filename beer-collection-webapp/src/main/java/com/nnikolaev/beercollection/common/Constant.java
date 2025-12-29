@@ -19,9 +19,11 @@ public class Constant {
         public static class Company {
             public static final String PREFIX = API_PREFIX + "/companies";
             public static final String CREATE = PREFIX + "/create";
-            public static final String READ = PREFIX + "/";
-            public static final String UPDATE = PREFIX + "/update";
+            public static final String READ_ALL = PREFIX;
+            public static final String READ_ONE = PREFIX + "/{id}";
+            public static final String UPDATE = PREFIX + "/update/{id}";
             public static final String DELETE = PREFIX + "/delete";
+            public static final String DELETE_ONE = PREFIX + "/delete/{id}";
         }
     }
 }

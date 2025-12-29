@@ -3,14 +3,15 @@ package com.nnikolaev.beercollection.security;
 import com.nnikolaev.beercollection.dto.response.error.ValidationErrorResponse;
 
 import com.nnikolaev.beercollection.dto.response.error.*;
-import com.nnikolaev.beercollection.exception.company.CompanyExistsException;
-import com.nnikolaev.beercollection.exception.user.UserExistsException;
-import com.nnikolaev.beercollection.exception.user.UserNotFoundException;
+import com.nnikolaev.beercollection.exception.company.*;
+import com.nnikolaev.beercollection.exception.user.*;
 import org.springframework.http.*;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.nio.file.AccessDeniedException;
@@ -24,7 +25,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleAll(Exception ex, WebRequest request) {
         ErrorResponse error = new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "Internal Server Error",
+                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
                 "An unexpected error occurred",
                 LocalDateTime.now(),
                 request.getDescription(false)
@@ -58,7 +59,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
     }
 
-    @ExceptionHandler({UserNotFoundException.class})
+    @ExceptionHandler({CompanyNotFoundException.class, UserNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleNotFound(RuntimeException ex, WebRequest request) {
         ErrorResponse err = new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
@@ -80,6 +81,35 @@ public class GlobalExceptionHandler {
                 req.getDescription(false)
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleTypeMismatch(
+            MethodArgumentTypeMismatchException ex, WebRequest request) {
+        ErrorResponse error = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad Request",
+                "Invalid path variable format: " + ex.getValue(),
+                LocalDateTime.now(),
+                request.getDescription(false)
+        );
+
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleNotReadable(
+            HttpMessageNotReadableException ex, WebRequest request) {
+
+        ErrorResponse error = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                "Required request body is missing or malformed",
+                LocalDateTime.now(),
+                request.getDescription(false)
+        );
+
+        return ResponseEntity.badRequest().body(error);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

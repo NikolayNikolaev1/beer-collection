@@ -1,19 +1,28 @@
 package com.nnikolaev.beercollection.service;
 
 import com.nnikolaev.beercollection.dto.request.CompanyUpsertDto;
+import com.nnikolaev.beercollection.dto.request.QueryParamsDto;
 import com.nnikolaev.beercollection.dto.response.CompanyDto;
 import com.nnikolaev.beercollection.exception.company.*;
+import com.nnikolaev.beercollection.mapper.CompanyMapper;
 import com.nnikolaev.beercollection.model.Company;
 import com.nnikolaev.beercollection.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Service
+@Transactional
 public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
+    @Autowired
+    private CompanyMapper companyMapper;
 
     public CompanyDto create(CompanyUpsertDto dto)
             throws CompanyExistsException {
@@ -23,24 +32,36 @@ public class CompanyService {
 
         this.companyRepository.save(newCompany);
 
-        return new CompanyDto(
-                newCompany.getId(),
-                newCompany.getName(),
-                newCompany.getDescription(),
-                newCompany.getCreatedAt());
+        return this.companyMapper.map(newCompany);
     }
 
-    // TODO: Check how would getById, getAll and deleteMultipleIds work in spring.
-//    public Set<CompanyDto> getAll() {
-//        List<Company> companies = this.companyRepository.findAll();
-//
-//
-//    }
+    public Page<CompanyDto> getAll(QueryParamsDto params, Pageable pageable) {
+        Specification<Company> spec = this.companyMapper.mapSpecifications(params);
 
-    public CompanyDto update(String id, CompanyUpsertDto dto)
+        Page<Company> page = this.companyRepository.findAll(spec, pageable);
+
+        return this.companyMapper.map(page);
+    }
+
+    public CompanyDto get(UUID id) {
+        Company company = this.companyRepository
+                .findById(id)
+                .orElseThrow(CompanyNotFoundException::new);
+
+        return this.companyMapper.map(company);
+    }
+
+    public Void delete(UUID... ids) {
+        if (ids.length == 0) return null;
+
+        this.companyRepository.deleteAllById(List.of(ids));
+        return null;
+    }
+
+    public CompanyDto update(UUID id, CompanyUpsertDto dto)
             throws CompanyExistsException, CompanyNotFoundException {
         Company company = this.companyRepository
-                .findById(UUID.fromString(id))
+                .findById(id)
                 .orElseThrow(CompanyNotFoundException::new);
 
         if (!company.getName().equals(dto.name())) this.validateName(dto.name());
@@ -50,11 +71,7 @@ public class CompanyService {
 
         this.companyRepository.save(company);
 
-        return new CompanyDto(
-                company.getId(),
-                company.getName(),
-                company.getDescription(),
-                company.getUpdatedAt());
+        return this.companyMapper.map(company);
     }
 
     private void validateName(String name)
