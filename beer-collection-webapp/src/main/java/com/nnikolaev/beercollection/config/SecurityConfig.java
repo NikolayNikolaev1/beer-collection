@@ -2,7 +2,7 @@ package com.nnikolaev.beercollection.config;
 
 import com.nnikolaev.beercollection.model.enums.UserRole;
 import com.nnikolaev.beercollection.security.jwt.*;
-import com.nnikolaev.beercollection.service.CustomUserDetailsService;
+import com.nnikolaev.beercollection.service.implementation.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;

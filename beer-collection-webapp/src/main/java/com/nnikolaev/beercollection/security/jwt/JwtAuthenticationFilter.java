@@ -1,7 +1,7 @@
 package com.nnikolaev.beercollection.security.jwt;
 
 import com.nnikolaev.beercollection.security.CustomUserDetails;
-import com.nnikolaev.beercollection.service.CustomUserDetailsService;
+import com.nnikolaev.beercollection.service.implementation.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;

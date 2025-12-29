@@ -1,4 +1,4 @@
-package com.nnikolaev.beercollection.service;
+package com.nnikolaev.beercollection.service.implementation;
 
 import com.nnikolaev.beercollection.exception.user.UserNotFoundException;
 import com.nnikolaev.beercollection.model.User;
