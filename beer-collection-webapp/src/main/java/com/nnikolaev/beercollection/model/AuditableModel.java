@@ -31,7 +31,7 @@ public abstract class AuditableModel {
     public Instant getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(Instant updatedAt) { this.updatedAt = updatedAt; }
 
-    public Instant isDeleted() { return this.deletedAt; }
+    public Instant getDeletedAt() { return this.deletedAt; }
     public void setDeletedAt(Instant deletedAt) { this.deletedAt = deletedAt; }
 
 }
