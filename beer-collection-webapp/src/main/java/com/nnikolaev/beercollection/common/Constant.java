@@ -11,6 +11,10 @@ public class Constant {
     }
 
     public static class ExceptionMessage {
+        public static class Beer {
+            public static final String NOT_FOUND = "Beer with provided ID does not exist.";
+        }
+
         public static class User {
             public static final String CONFLICT_ROLE = "User already with provided role.";
             public static final String CONFLICT_DELETED = "User already deleted.";
@@ -29,6 +33,15 @@ public class Constant {
         public static final String METHOD_UPDATE = "/update/{id}";
         public static final String METHOD_DELETE = "/delete";
 
+        public static class Beer {
+            public static final String PREFIX = API_PREFIX + "/beers";
+            public static final String CREATE = PREFIX + METHOD_CREATE;
+            public static final String READ_ALL = PREFIX;
+            public static final String READ_ONE = PREFIX + "/{id}";
+            public static final String UPDATE = PREFIX + METHOD_UPDATE;
+            public static final String DELETE = PREFIX + METHOD_DELETE;
+            public static final String DELETE_ONE = PREFIX + METHOD_DELETE + "/{id}";
+        }
 
         public static class Company {
             public static final String PREFIX = API_PREFIX + "/companies";

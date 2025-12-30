@@ -6,6 +6,7 @@ import com.nnikolaev.beercollection.dto.response.error.*;
 import com.nnikolaev.beercollection.exception.OperationConflictException;
 import com.nnikolaev.beercollection.exception.company.*;
 import com.nnikolaev.beercollection.exception.user.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
@@ -60,7 +61,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
     }
 
-    @ExceptionHandler({CompanyNotFoundException.class, UserNotFoundException.class})
+    @ExceptionHandler({EntityNotFoundException.class, CompanyNotFoundException.class, UserNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleNotFound(RuntimeException ex, WebRequest request) {
         ErrorResponse err = new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
