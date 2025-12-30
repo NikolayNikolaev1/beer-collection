@@ -7,13 +7,13 @@ import com.nnikolaev.beercollection.model.User;
 import com.nnikolaev.beercollection.model.enums.UserRole;
 import com.nnikolaev.beercollection.repository.UserRepository;
 import com.nnikolaev.beercollection.security.jwt.JwtTokenProvider;
-import com.nnikolaev.beercollection.service.UserService;
+import com.nnikolaev.beercollection.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthServiceImpl {
+public class AuthServiceImpl implements AuthService {
     @Autowired
     private UserService userService;
     @Autowired

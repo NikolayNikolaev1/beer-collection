@@ -3,6 +3,7 @@ package com.nnikolaev.beercollection.security;
 import com.nnikolaev.beercollection.dto.response.error.ValidationErrorResponse;
 
 import com.nnikolaev.beercollection.dto.response.error.*;
+import com.nnikolaev.beercollection.exception.OperationConflictException;
 import com.nnikolaev.beercollection.exception.company.*;
 import com.nnikolaev.beercollection.exception.user.*;
 import org.springframework.http.*;
@@ -46,7 +47,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
     }
 
-    @ExceptionHandler({CompanyExistsException.class, UserExistsException.class})
+    @ExceptionHandler({CompanyExistsException.class, OperationConflictException.class, UserExistsException.class})
     public ResponseEntity<ErrorResponse> handleConflict(RuntimeException ex, WebRequest request) {
         ErrorResponse err = new ErrorResponse(
                 HttpStatus.CONFLICT.value(),

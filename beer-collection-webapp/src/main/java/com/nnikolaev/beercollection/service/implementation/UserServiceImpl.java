@@ -1,7 +1,8 @@
 package com.nnikolaev.beercollection.service.implementation;
 
-import com.nnikolaev.beercollection.dto.request.QueryParamsDto;
+import com.nnikolaev.beercollection.dto.request.*;
 import com.nnikolaev.beercollection.dto.response.UserDto;
+import com.nnikolaev.beercollection.exception.OperationConflictException;
 import com.nnikolaev.beercollection.exception.user.*;
 import com.nnikolaev.beercollection.mapper.UserMapper;
 import com.nnikolaev.beercollection.model.User;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.UUID;
+
+import static com.nnikolaev.beercollection.common.Constant.ExceptionMessage;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -47,15 +50,32 @@ public class UserServiceImpl implements UserService {
         return this.userMapper.map(this.getById(id));
     }
 
-    public Void deactivate(UUID id) {
+    public UserDto update(UUID id, UserPatchRequest req) {
         User user = this.getById(id);
 
-        // TODO: Add already deleted check exception.
+        if (req.role() != null) {
+            if (user.getRole().equals(req.role())) {
+                throw new OperationConflictException(ExceptionMessage.User.CONFLICT_ROLE);
+            }
 
-        user.setDeletedAt(Instant.now());
-//        this.userRepository.save(user); // TODO: Check if save is needed for update
+            user.setRole(req.role());
+        }
 
-        return null;
+        if (req.isDeleted() != null) {
+            if (user.getDeletedAt() != null && req.isDeleted()) {
+                throw new OperationConflictException(ExceptionMessage.User.CONFLICT_DELETED);
+            }
+
+            if (user.getDeletedAt() == null && !req.isDeleted()) {
+                throw new OperationConflictException(ExceptionMessage.User.CONFLICT_NOT_DELETED);
+            }
+
+            user.setDeletedAt(req.isDeleted() ? Instant.now() : null);
+        }
+
+        this.userRepository.save(user);
+
+        return this.userMapper.map(user);
     }
 
     public User getById(UUID id)

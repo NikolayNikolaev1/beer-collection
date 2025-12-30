@@ -1,6 +1,7 @@
 package com.nnikolaev.beercollection.service;
 
 import com.nnikolaev.beercollection.dto.request.QueryParamsDto;
+import com.nnikolaev.beercollection.dto.request.UserPatchRequest;
 import com.nnikolaev.beercollection.dto.response.UserDto;
 import com.nnikolaev.beercollection.model.enums.UserRole;
 import org.springframework.data.domain.Page;
@@ -15,5 +16,5 @@ public interface UserService {
 
     UserDto get(UUID id);
 
-    Void deactivate(UUID id);
+    UserDto update(UUID id, UserPatchRequest req);
 }
