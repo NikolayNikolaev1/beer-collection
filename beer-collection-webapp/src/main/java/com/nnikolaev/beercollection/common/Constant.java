@@ -12,8 +12,17 @@ public class Constant {
 
     public static class ExceptionMessage {
         public static class Beer {
-            public static final String NOT_FOUND = "Beer with provided ID does not exist.";
+            public static final String NOT_FOUND = "Beer with provided ID does not exist:";
         }
+
+        public static class Company {
+            public static final String NOT_FOUND = "Company with provided ID does not exist:";
+        }
+
+        public static class Country {
+            public static final String NOT_FOUND = "Country with provided ID does not exist:";
+        }
+
 
         public static class User {
             public static final String CONFLICT_ROLE = "User already with provided role.";

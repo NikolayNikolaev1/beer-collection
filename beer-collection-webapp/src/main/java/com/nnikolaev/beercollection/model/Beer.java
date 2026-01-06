@@ -35,10 +35,12 @@ public class Beer extends AuditableModel {
             String name,
             String description,
             Double price,
-            Double alcohol,
             Integer volume,
+            Double alcohol,
             BeerColor color,
-            BeerTag tag) {
+            BeerTag tag,
+            Company company,
+            Country country) {
         this.name = name;
         this.description = description;
         this.priceEu = price;
@@ -46,6 +48,8 @@ public class Beer extends AuditableModel {
         this.volumeMl = volume;
         this.color = color;
         this.tag = tag;
+        this.company = company;
+        this.country = country;
     }
 
     public String getName() { return this.name; }
@@ -66,6 +70,12 @@ public class Beer extends AuditableModel {
 
     public BeerTag getTag() { return this.tag; }
     public void setTag(BeerTag tag) { this.tag = tag; }
+
+    public Company getCompany() { return this.company; }
+    public void setCompany(Company company) { this.company = company; }
+
+    public Country getCountry() { return this.country; }
+    public void setCountry(Country country) { this.country = country; }
 
     public Set<Box> getBoxes() { return Collections.unmodifiableSet(this.boxes); }
 }

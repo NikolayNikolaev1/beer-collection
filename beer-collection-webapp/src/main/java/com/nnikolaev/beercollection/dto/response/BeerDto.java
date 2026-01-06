@@ -10,7 +10,9 @@ public record BeerDto(
         String description,
         Double price,
         Integer volume,
+        Double alcohol,
         BeerColor color,
-        BeerTag tag) {
-    // TODO: Implement Company and Country object DTOs
+        BeerTag tag,
+        CompanyDto company
+) {
 }
