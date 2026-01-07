@@ -27,16 +27,3 @@ public record BeerUpsertDto(
         @NotNull
         UUID countryId) {
 }
-
-/*
-*
-* public record BeerDto(
-        UUID id,
-        String name,
-        String description,
-        Double price,
-        Integer volume,
-        BeerColor color,
-        BeerTag tag) {
-    // TODO: Implement Company and Country object DTOs
-}*/

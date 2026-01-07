@@ -25,6 +25,7 @@ public abstract class AuditableModel {
     private Instant deletedAt;
 
     public UUID getId() { return this.id; }
+    public void setId(UUID id) { this.id = id; }
 
     public Instant getCreatedAt() { return this.createdAt; }
 

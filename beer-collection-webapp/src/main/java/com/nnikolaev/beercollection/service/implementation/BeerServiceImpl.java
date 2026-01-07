@@ -10,6 +10,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 import static com.nnikolaev.beercollection.common.Constant.ExceptionMessage;
@@ -26,14 +27,47 @@ public class BeerServiceImpl implements BeerService {
     private BeerMapper beerMapper;
 
     public BeerDto create(BeerUpsertDto dto) {
-        Company company = this.getCompanyById(dto.companyId());
+        Beer newBeer = this.createNewBeer(dto);
+
+        this.beerRepository.save(newBeer);
+
+        return beerMapper.map(newBeer);
+    }
+
+    public Void delete(UUID... ids) {
+        if (ids.length == 0) return null;
+
+        this.beerRepository.deleteAllById(List.of(ids));
+        return null;
+    }
+
+    public BeerDto get(UUID id) {
+        return this.beerMapper.map(this.getById(id));
+    }
+
+    public BeerDto update(UUID id, BeerUpsertDto dto) {
+        this.getById(id);
+
+        Beer beer = this.createNewBeer(dto);
+        beer.setId(id);
+
+        this.beerRepository.save(beer);
+
+        return this.beerMapper.map(beer);
+    }
+
+    private Beer createNewBeer(BeerUpsertDto dto) {
+        Company company = this.companyRepository
+                .findById(dto.companyId())
+                .orElseThrow(() -> new EntityNotFoundException(
+                        ExceptionMessage.Company.NOT_FOUND.concat(dto.companyId().toString())));
 
         Country country = this.countryRepository
                 .findById(dto.countryId())
                 .orElseThrow(() -> new EntityNotFoundException(
                         ExceptionMessage.Country.NOT_FOUND.concat(dto.countryId().toString())));
 
-        Beer newBeer = new Beer(
+        return new Beer(
                 dto.name(),
                 dto.description(),
                 dto.price(),
@@ -44,20 +78,6 @@ public class BeerServiceImpl implements BeerService {
                 company,
                 country
         );
-
-        this.beerRepository.save(newBeer);
-
-        return beerMapper.map(newBeer);
-    }
-
-    public BeerDto get(UUID id) {
-        return this.beerMapper.map(this.getById(id));
-    }
-
-    public BeerDto update(UUID id, BeerUpsertDto dto) {
-        Beer beer = this.getById(id);
-        // TODO: Finish business logic.
-        return this.beerMapper.map(beer);
     }
 
     private Beer getById(UUID id) {
@@ -65,12 +85,5 @@ public class BeerServiceImpl implements BeerService {
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
                         ExceptionMessage.Beer.NOT_FOUND.concat(id.toString())));
-    }
-
-    private Company getCompanyById(UUID id) {
-        return this.companyRepository
-                .findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        ExceptionMessage.Company.NOT_FOUND.concat(id.toString())));
     }
 }
