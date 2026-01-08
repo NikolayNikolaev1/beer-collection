@@ -5,9 +5,11 @@ import jakarta.validation.constraints.*;
 
 import java.util.UUID;
 
+import static com.nnikolaev.beercollection.common.Constant.Validation;
+
 public record BeerUpsertDto(
         @NotBlank
-        @Size(min = 2, max = 128)
+        @Size(min = Validation.TEXT_MIN_LENGTH, max = Validation.TEXT_MAX_LENGTH)
         String name,
         @Size(max = 256)
         String description,

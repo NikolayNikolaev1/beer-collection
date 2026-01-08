@@ -3,11 +3,10 @@ package com.nnikolaev.beercollection.security;
 import com.nnikolaev.beercollection.dto.response.error.ValidationErrorResponse;
 
 import com.nnikolaev.beercollection.dto.response.error.*;
-import com.nnikolaev.beercollection.exception.EntityInUseException;
-import com.nnikolaev.beercollection.exception.OperationConflictException;
+import com.nnikolaev.beercollection.exception.*;
 import com.nnikolaev.beercollection.exception.company.*;
 import com.nnikolaev.beercollection.exception.user.*;
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -53,6 +52,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             CompanyExistsException.class,
             DataIntegrityViolationException.class,
+            EntityExistsException.class,
             EntityInUseException.class,
             OperationConflictException.class,
             UserExistsException.class})

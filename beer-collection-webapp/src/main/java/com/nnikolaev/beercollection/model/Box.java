@@ -33,12 +33,18 @@ public class Box extends AuditableModel {
 
     protected Box() { }
 
-    public Box(String name, String description, Double price) {
+    public Box(
+            String name,
+            String description,
+            Double price,
+            Set<BoxTag> tags,
+            Set<Beer> beers) {
         this.name = name;
         this.description = description;
         this.priceEu = price;
+        this.tags = tags;
+        this.beers = beers;
     }
-
 
     public String getName() { return this.name; }
     public void setName(String name) { this.name = name; }

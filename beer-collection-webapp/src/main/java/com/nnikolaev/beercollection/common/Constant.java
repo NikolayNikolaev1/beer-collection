@@ -15,6 +15,10 @@ public class Constant {
             public static final String NOT_FOUND = "Beer with provided ID does not exist:";
         }
 
+        public static class Box {
+            public static final String EXISTS = "Box with provided name already exists:";
+        }
+
         public static class Company {
             public static final String IN_USE = "Company is associated with existing beers.";
             public static final String NOT_FOUND = "Company with provided ID does not exist:";
@@ -54,6 +58,16 @@ public class Constant {
             public static final String DELETE_ONE = PREFIX + METHOD_DELETE + "/{id}";
         }
 
+        public static class Box {
+            public static final String PREFIX = API_PREFIX + "/boxes";
+            public static final String CREATE = PREFIX + METHOD_CREATE;
+            public static final String READ_ALL = PREFIX;
+            public static final String READ_ONE = PREFIX + "/{id}";
+            public static final String UPDATE = PREFIX + METHOD_UPDATE;
+            public static final String DELETE = PREFIX + METHOD_DELETE;
+            public static final String DELETE_ONE = PREFIX + METHOD_DELETE + "/{id}";
+        }
+
         public static class Company {
             public static final String PREFIX = API_PREFIX + "/companies";
             public static final String CREATE = PREFIX + METHOD_CREATE;
@@ -72,5 +86,10 @@ public class Constant {
             public static final String UPDATE = PREFIX + METHOD_UPDATE;
 
         }
+    }
+
+    public static class Validation {
+        public static final int TEXT_MAX_LENGTH = 128;
+        public static final int TEXT_MIN_LENGTH = 2;
     }
 }
