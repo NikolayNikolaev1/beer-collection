@@ -9,7 +9,7 @@ public class Country extends AuditableModel {
     private String name;
     private String code;
 
-    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "country")
     private Set<Beer> beers = new HashSet<>();
 
     protected Country() { }

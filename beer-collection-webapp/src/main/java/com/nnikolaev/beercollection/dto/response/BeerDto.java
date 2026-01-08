@@ -13,6 +13,8 @@ public record BeerDto(
         Double alcohol,
         BeerColor color,
         BeerTag tag,
+        boolean isLegacy,
         CompanyDto company
+        // TODO: Add country mapper
 ) {
 }

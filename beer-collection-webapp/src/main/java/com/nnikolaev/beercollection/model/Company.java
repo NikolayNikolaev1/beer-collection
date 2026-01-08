@@ -9,7 +9,7 @@ public class Company extends AuditableModel {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "company")
     private Set<Beer> beers = new HashSet<>();
 
     protected Company() { }

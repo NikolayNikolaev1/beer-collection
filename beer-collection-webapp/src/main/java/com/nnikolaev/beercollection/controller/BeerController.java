@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
+import java.util.*;
 
 import static com.nnikolaev.beercollection.common.Constant.Route;
 
@@ -21,7 +21,7 @@ public class BeerController {
     private BeerService beerService;
 
     @GetMapping(Route.Beer.READ_ONE)
-    // TODO: Test request from unauthorized.
+    // TODO: Consider making it for unauthorized users.
     public ResponseEntity<BeerDto> get(@PathVariable UUID id) {
         return ResponseHandler.success(this.beerService.get(id));
     }
@@ -34,14 +34,19 @@ public class BeerController {
 
     @DeleteMapping(Route.Beer.DELETE)
     @PreAuthorize(Constant.ADMIN_AUTHORIZATION)
-    public ResponseEntity<?> delete(@RequestBody UUID... ids) {
-        return ResponseHandler.success(this.beerService.delete(ids));
+    public ResponseEntity<List<BeerDto>> delete(@RequestBody UUID... ids) {
+        return ResponseHandler.success(this.beerService.changeDeleteStatus(true, ids));
     }
 
     @PutMapping(Route.Beer.UPDATE)
     @PreAuthorize(Constant.ADMIN_AUTHORIZATION)
-    // TODO: Add enum values custom error message.
     public ResponseEntity<BeerDto> update(@PathVariable UUID id, @Valid @RequestBody BeerUpsertDto req) {
         return ResponseHandler.success(this.beerService.update(id, req));
+    }
+// TODO: http://localhost:8080/api/beers/restores returns status 500.
+    @PatchMapping(Route.Beer.RESTORE)
+    @PreAuthorize(Constant.ADMIN_AUTHORIZATION)
+    public ResponseEntity<List<BeerDto>> restore(@RequestBody UUID... ids) {
+        return ResponseHandler.success(this.beerService.changeDeleteStatus( false, ids));
     }
 }

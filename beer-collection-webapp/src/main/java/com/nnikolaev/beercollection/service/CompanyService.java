@@ -14,7 +14,7 @@ public interface CompanyService {
 
     CompanyDto get(UUID id);
 
-    Void delete(UUID... ids);
+    Void delete(UUID id);
 
     CompanyDto update(UUID id, CompanyUpsertDto dto);
 }

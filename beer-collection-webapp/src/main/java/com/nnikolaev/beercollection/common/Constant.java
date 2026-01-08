@@ -16,6 +16,7 @@ public class Constant {
         }
 
         public static class Company {
+            public static final String IN_USE = "Company is associated with existing beers.";
             public static final String NOT_FOUND = "Company with provided ID does not exist:";
         }
 
@@ -48,6 +49,7 @@ public class Constant {
             public static final String READ_ALL = PREFIX;
             public static final String READ_ONE = PREFIX + "/{id}";
             public static final String UPDATE = PREFIX + METHOD_UPDATE;
+            public static final String RESTORE = PREFIX + "/restore";
             public static final String DELETE = PREFIX + METHOD_DELETE;
             public static final String DELETE_ONE = PREFIX + METHOD_DELETE + "/{id}";
         }

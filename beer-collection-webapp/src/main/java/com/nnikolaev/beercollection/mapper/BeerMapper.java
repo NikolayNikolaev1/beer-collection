@@ -5,6 +5,8 @@ import com.nnikolaev.beercollection.model.Beer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class BeerMapper {
     @Autowired
@@ -22,7 +24,15 @@ public class BeerMapper {
                 beer.getAlcohol(),
                 beer.getColor(),
                 beer.getTag(),
+                beer.getDeletedAt() != null,
                 this.companyMapper.map(beer.getCompany())
         );
+    }
+
+    public List<BeerDto> map(List<Beer> beers) {
+        return beers
+                .stream()
+                .map(this::map)
+                .toList();
     }
 }

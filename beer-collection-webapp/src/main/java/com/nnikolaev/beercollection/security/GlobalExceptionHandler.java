@@ -3,10 +3,12 @@ package com.nnikolaev.beercollection.security;
 import com.nnikolaev.beercollection.dto.response.error.ValidationErrorResponse;
 
 import com.nnikolaev.beercollection.dto.response.error.*;
+import com.nnikolaev.beercollection.exception.EntityInUseException;
 import com.nnikolaev.beercollection.exception.OperationConflictException;
 import com.nnikolaev.beercollection.exception.company.*;
 import com.nnikolaev.beercollection.exception.user.*;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
@@ -48,7 +50,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
     }
 
-    @ExceptionHandler({CompanyExistsException.class, OperationConflictException.class, UserExistsException.class})
+    @ExceptionHandler({
+            CompanyExistsException.class,
+            DataIntegrityViolationException.class,
+            EntityInUseException.class,
+            OperationConflictException.class,
+            UserExistsException.class})
     public ResponseEntity<ErrorResponse> handleConflict(RuntimeException ex, WebRequest request) {
         ErrorResponse err = new ErrorResponse(
                 HttpStatus.CONFLICT.value(),
@@ -61,7 +68,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
     }
 
-    @ExceptionHandler({EntityNotFoundException.class, CompanyNotFoundException.class, UserNotFoundException.class})
+    @ExceptionHandler({EntityNotFoundException.class, UserNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleNotFound(RuntimeException ex, WebRequest request) {
         ErrorResponse err = new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),

@@ -10,6 +10,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,11 +35,16 @@ public class BeerServiceImpl implements BeerService {
         return beerMapper.map(newBeer);
     }
 
-    public Void delete(UUID... ids) {
+    public List<BeerDto> changeDeleteStatus(boolean deleteFlag, UUID... ids) {
         if (ids.length == 0) return null;
 
-        this.beerRepository.deleteAllById(List.of(ids));
-        return null;
+        List<Beer> beers = this.beerRepository
+                .findAllById(List.of(ids));
+
+        beers.forEach(b -> b.setDeletedAt(deleteFlag ? Instant.now() : null));
+
+        this.beerRepository.saveAll(beers);
+        return this.beerMapper.map(beers);
     }
 
     public BeerDto get(UUID id) {

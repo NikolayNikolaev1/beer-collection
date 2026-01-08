@@ -1,5 +1,6 @@
 package com.nnikolaev.beercollection.controller;
 
+import com.nnikolaev.beercollection.common.Constant;
 import com.nnikolaev.beercollection.dto.request.*;
 import com.nnikolaev.beercollection.dto.response.CompanyDto;
 import com.nnikolaev.beercollection.security.ResponseHandler;
@@ -17,7 +18,7 @@ import java.util.*;
 import static com.nnikolaev.beercollection.common.Constant.Route;
 
 @RestController
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize(Constant.ADMIN_AUTHORIZATION)
 public class CompanyController {
     @Autowired
     private CompanyService companyService;
@@ -40,11 +41,6 @@ public class CompanyController {
     @PutMapping(Route.Company.UPDATE)
     public ResponseEntity<CompanyDto> update(@PathVariable UUID id, @Valid @RequestBody CompanyUpsertDto req) {
         return ResponseHandler.success(this.companyService.update(id, req));
-    }
-
-    @DeleteMapping(Route.Company.DELETE)
-    public ResponseEntity<?> delete(@RequestBody UUID... ids) {
-        return ResponseHandler.success(this.companyService.delete(ids));
     }
 
     @DeleteMapping(Route.Company.DELETE_ONE)
