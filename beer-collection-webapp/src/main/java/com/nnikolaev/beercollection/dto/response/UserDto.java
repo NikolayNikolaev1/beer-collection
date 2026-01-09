@@ -10,5 +10,6 @@ public record UserDto(
         String email,
         UserRole role,
         boolean isActive,
+        Instant createAt,
         Instant modifiedAt) {
 }

@@ -57,4 +57,5 @@ public class Box extends AuditableModel {
 
     public Set<BoxTag> getTags() { return Collections.unmodifiableSet(this.tags); }
 
+    public Set<Beer> getBeers() { return Collections.unmodifiableSet(this.beers); }
 }

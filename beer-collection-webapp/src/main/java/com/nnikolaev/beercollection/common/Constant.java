@@ -17,6 +17,7 @@ public class Constant {
 
         public static class Box {
             public static final String EXISTS = "Box with provided name already exists:";
+            public static final String NOT_FOUND = "Box with provided ID does not exist:";
         }
 
         public static class Company {
@@ -64,6 +65,7 @@ public class Constant {
             public static final String READ_ALL = PREFIX;
             public static final String READ_ONE = PREFIX + "/{id}";
             public static final String UPDATE = PREFIX + METHOD_UPDATE;
+            public static final String RESTORE = PREFIX + "/restore";
             public static final String DELETE = PREFIX + METHOD_DELETE;
             public static final String DELETE_ONE = PREFIX + METHOD_DELETE + "/{id}";
         }

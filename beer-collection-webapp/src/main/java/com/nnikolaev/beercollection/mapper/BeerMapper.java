@@ -24,8 +24,11 @@ public class BeerMapper {
                 beer.getAlcohol(),
                 beer.getColor(),
                 beer.getTag(),
+                beer.getCompany().getName(),
+                beer.getCountry().getName(),
                 beer.getDeletedAt() != null,
-                this.companyMapper.map(beer.getCompany())
+                beer.getCreatedAt(),
+                beer.getUpdatedAt()
         );
     }
 

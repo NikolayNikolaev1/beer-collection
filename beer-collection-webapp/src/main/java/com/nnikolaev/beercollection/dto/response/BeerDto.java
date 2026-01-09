@@ -2,6 +2,7 @@ package com.nnikolaev.beercollection.dto.response;
 
 import com.nnikolaev.beercollection.model.enums.*;
 
+import java.time.Instant;
 import java.util.UUID;
 
 public record BeerDto(
@@ -13,8 +14,10 @@ public record BeerDto(
         Double alcohol,
         BeerColor color,
         BeerTag tag,
+        String companyName,
+        String countryName,
         boolean isLegacy,
-        CompanyDto company
-        // TODO: Add country mapper
+        Instant availableSince,
+        Instant modifiedAt
 ) {
 }

@@ -14,6 +14,7 @@ public class UserMapper {
                 user.getEmail(),
                 user.getRole(),
                 user.getDeletedAt() == null,
+                user.getCreatedAt(),
                 user.getUpdatedAt()
         );
     }
