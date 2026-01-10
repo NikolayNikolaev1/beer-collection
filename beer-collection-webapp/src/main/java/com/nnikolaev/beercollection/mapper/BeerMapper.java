@@ -59,6 +59,26 @@ public class BeerMapper {
                                 "%" + params.search().toLowerCase() + "%"));
             }
 
+            if (params.priceMin() != null) {
+                predicate = criteriaBuilder.and(
+                        predicate,
+                        criteriaBuilder.greaterThanOrEqualTo(
+                                root.get("priceEu"),
+                                params.priceMin()
+                        )
+                );
+            }
+
+            if (params.priceMax() != null) {
+                predicate = criteriaBuilder.and(
+                        predicate,
+                        criteriaBuilder.lessThanOrEqualTo(
+                                root.get("priceEu"),
+                                params.priceMax()
+                        )
+                );
+            }
+
             if (params.beerColors() != null && !params.beerColors().isEmpty()) {
                 predicate = criteriaBuilder.and(
                         predicate,
@@ -76,14 +96,14 @@ public class BeerMapper {
             if (params.companyIds() != null && !params.companyIds().isEmpty()){
                 predicate = criteriaBuilder.and(
                         predicate,
-                        root.get("companyId").in(params.companyIds())
+                        root.get("company").get("id").in(params.companyIds())
                 );
             }
 
             if (params.countryIds() != null && !params.countryIds().isEmpty()){
                 predicate = criteriaBuilder.and(
                         predicate,
-                        root.get("countryId").in(params.countryIds())
+                        root.get("country").get("id").in(params.countryIds())
                 );
             }
 

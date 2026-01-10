@@ -6,9 +6,13 @@ import java.util.*;
 
 public record QueryParamsDto(
         String search,
+        Double priceMin,
+        Double priceMax,
         UserRole role,
         Set<BeerColor> beerColors,
         Set<BeerTag> tags,
+        Set<BoxTag> boxTags,
         Set<UUID> companyIds,
-        Set<UUID> countryIds) {
+        Set<UUID> countryIds,
+        Set<UUID> beerIds) {
 }
