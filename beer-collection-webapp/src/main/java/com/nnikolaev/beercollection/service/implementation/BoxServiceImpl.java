@@ -1,6 +1,7 @@
 package com.nnikolaev.beercollection.service.implementation;
 
 import com.nnikolaev.beercollection.dto.request.BoxUpsertDto;
+import com.nnikolaev.beercollection.dto.request.QueryParamsDto;
 import com.nnikolaev.beercollection.dto.response.BoxDto;
 import com.nnikolaev.beercollection.mapper.BoxMapper;
 import com.nnikolaev.beercollection.model.*;
@@ -9,6 +10,9 @@ import com.nnikolaev.beercollection.service.BoxService;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +53,15 @@ public class BoxServiceImpl implements BoxService {
 
     public BoxDto get(UUID id) {
         return this.boxMapper.map(this.getById(id));
+    }
+
+    public Page<BoxDto> getAll(QueryParamsDto params, Pageable pageable) {
+
+        Specification<Box> spec = this.boxMapper.mapSpecifications(params);
+
+        Page<Box> page = this.boxRepository.findAll(spec, pageable);
+
+        return this.boxMapper.map(page);
     }
 
     public BoxDto update(UUID id, BoxUpsertDto dto) {

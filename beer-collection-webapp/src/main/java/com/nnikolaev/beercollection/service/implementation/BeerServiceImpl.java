@@ -1,6 +1,7 @@
 package com.nnikolaev.beercollection.service.implementation;
 
 import com.nnikolaev.beercollection.dto.request.BeerUpsertDto;
+import com.nnikolaev.beercollection.dto.request.QueryParamsDto;
 import com.nnikolaev.beercollection.dto.response.BeerDto;
 import com.nnikolaev.beercollection.mapper.BeerMapper;
 import com.nnikolaev.beercollection.model.*;
@@ -8,6 +9,9 @@ import com.nnikolaev.beercollection.repository.*;
 import com.nnikolaev.beercollection.service.BeerService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -49,6 +53,14 @@ public class BeerServiceImpl implements BeerService {
 
     public BeerDto get(UUID id) {
         return this.beerMapper.map(this.getById(id));
+    }
+
+    public Page<BeerDto> getAll(QueryParamsDto params, Pageable pageable) {
+        Specification<Beer> spec = this.beerMapper.mapSpecifications(params);
+
+        Page<Beer> page = this.beerRepository.findAll(spec, pageable);
+
+        return this.beerMapper.map(page);
     }
 
     public BeerDto update(UUID id, BeerUpsertDto dto) {

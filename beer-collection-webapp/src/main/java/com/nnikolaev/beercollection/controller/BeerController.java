@@ -2,11 +2,14 @@ package com.nnikolaev.beercollection.controller;
 
 import com.nnikolaev.beercollection.common.Constant;
 import com.nnikolaev.beercollection.dto.request.BeerUpsertDto;
+import com.nnikolaev.beercollection.dto.request.QueryParamsDto;
 import com.nnikolaev.beercollection.dto.response.BeerDto;
 import com.nnikolaev.beercollection.security.ResponseHandler;
 import com.nnikolaev.beercollection.service.BeerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +27,11 @@ public class BeerController {
     // TODO: Consider making it for unauthorized users.
     public ResponseEntity<BeerDto> get(@PathVariable UUID id) {
         return ResponseHandler.success(this.beerService.get(id));
+    }
+
+    @GetMapping(Route.Beer.READ_ALL)
+    public ResponseEntity<Page<BeerDto>> get(@ModelAttribute QueryParamsDto params, Pageable pageable) {
+        return ResponseHandler.success(this.beerService.getAll(params, pageable));
     }
 
     @PostMapping(Route.Beer.CREATE)

@@ -36,7 +36,6 @@ public class CompanyMapper {
                                 criteriaBuilder.lower(root.get("name")),
                                 "%" + params.search().toLowerCase() + "%"));
             }
-
             return predicate;
         };
     }

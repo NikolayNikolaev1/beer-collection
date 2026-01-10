@@ -5,6 +5,7 @@ import com.nnikolaev.beercollection.dto.response.UserDto;
 import com.nnikolaev.beercollection.exception.OperationConflictException;
 import com.nnikolaev.beercollection.exception.user.*;
 import com.nnikolaev.beercollection.mapper.UserMapper;
+import com.nnikolaev.beercollection.model.Company;
 import com.nnikolaev.beercollection.model.User;
 import com.nnikolaev.beercollection.model.enums.UserRole;
 import com.nnikolaev.beercollection.repository.UserRepository;
@@ -12,6 +13,7 @@ import com.nnikolaev.beercollection.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,7 +45,11 @@ public class UserServiceImpl implements UserService {
     }
 
     public Page<UserDto> getAll(QueryParamsDto params, Pageable pageable) {
-        return null;
+        Specification<User> spec = this.userMapper.mapSpecifications(params);
+
+        Page<User> page = this.userRepository.findAll(spec, pageable);
+
+        return this.userMapper.map(page);
     }
 
     public UserDto get(UUID id) {

@@ -1,12 +1,13 @@
 package com.nnikolaev.beercollection.controller;
 
 import com.nnikolaev.beercollection.common.Constant;
-import com.nnikolaev.beercollection.dto.request.BoxUpsertDto;
+import com.nnikolaev.beercollection.dto.request.*;
 import com.nnikolaev.beercollection.dto.response.BoxDto;
 import com.nnikolaev.beercollection.security.ResponseHandler;
 import com.nnikolaev.beercollection.service.BoxService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,11 @@ public class BoxController {
     @GetMapping(Route.Box.READ_ONE)
     public ResponseEntity<BoxDto> get(@PathVariable UUID id){
         return ResponseHandler.success(this.boxService.get(id));
+    }
+
+    @GetMapping(Route.Box.READ_ALL)
+    public ResponseEntity<Page<BoxDto>> get(@ModelAttribute QueryParamsDto params, Pageable pageable) {
+        return ResponseHandler.success(this.boxService.getAll(params, pageable));
     }
 
     @PostMapping(Route.Box.CREATE)
