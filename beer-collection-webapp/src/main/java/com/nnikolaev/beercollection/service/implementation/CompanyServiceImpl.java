@@ -33,7 +33,7 @@ public class CompanyServiceImpl implements CompanyService {
             throws CompanyExistsException {
         this.validateName(dto.name());
 
-        final Company newCompany = new Company(dto.name(), dto.description());
+        Company newCompany = createNewCompany(dto);
 
         this.companyRepository.save(newCompany);
 
@@ -71,12 +71,16 @@ public class CompanyServiceImpl implements CompanyService {
 
         if (!company.getName().equals(dto.name())) this.validateName(dto.name());
 
-        company.setName(dto.name());
-        company.setDescription(dto.description());
+        company = createNewCompany(dto);
+        company.setId(id);
 
         this.companyRepository.save(company);
 
         return this.companyMapper.map(company);
+    }
+
+    private Company createNewCompany(CompanyUpsertDto dto) {
+        return new Company(dto.name(), dto.description());
     }
 
     private Company getById(UUID id) {

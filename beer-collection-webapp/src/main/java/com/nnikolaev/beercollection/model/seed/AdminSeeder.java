@@ -5,11 +5,13 @@ import com.nnikolaev.beercollection.repository.UserRepository;
 import com.nnikolaev.beercollection.service.UserService;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import static com.nnikolaev.beercollection.common.Constant.AppConfigValue;
 
 @Component
+@Order(1)
 public class AdminSeeder implements CommandLineRunner {
     @Autowired
     private UserRepository userRepository;

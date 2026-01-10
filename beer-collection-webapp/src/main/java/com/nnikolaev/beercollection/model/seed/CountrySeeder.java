@@ -5,6 +5,7 @@ import com.nnikolaev.beercollection.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -12,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.*;
 
 @Component
+@Order(2)
 public class CountrySeeder implements CommandLineRunner {
     private static final String ALL_COUNTRIES_API_URL = "https://restcountries.com/v3.1/all?fields=name,cca2";
     private static final String COUNTRY_NAME_KEY = "name";

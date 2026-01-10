@@ -31,10 +31,16 @@ public class BoxMapper {
         );
     }
 
+    public List<BoxDto> map(List<Box> boxes) {
+        return boxes
+                .stream()
+                .map(this::map)
+                .toList();
+    }
+
     public Page<BoxDto> map(Page<Box> boxes) {
         return boxes.map(this::map);
     }
-
 
     public Specification<Box> mapSpecifications(QueryParamsDto params) {
         return (root, query, criteriaBuilder) -> {
