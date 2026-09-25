@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="CollectionPlatform.Common/CollectionPlatform.Common.csproj" Id="8bd9b6de-5118-487f-9199-36a84140a3d9" />
+    <Project Path="src/CollectionPlatform.Api/CollectionPlatform.Api.csproj" />
+    <Project Path="src/CollectionPlatform.Application/CollectionPlatform.Application.csproj" />
+    <Project Path="src/CollectionPlatform.Domain/CollectionPlatform.Domain.csproj" />
+    <Project Path="src/CollectionPlatform.Infrastructure/CollectionPlatform.Infrastructure.csproj" />
+    <Project Path="src/CollectionPlatform.Provisioning/CollectionPlatform.Provisioning.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CollectionPlatform.IntegrationTests/CollectionPlatform.IntegrationTests.csproj" />
+    <Project Path="tests/CollectionPlatform.UnitTests/CollectionPlatform.UnitTests.csproj" />
+  </Folder>
+</Solution>
