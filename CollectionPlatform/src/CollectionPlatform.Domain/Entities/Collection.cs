@@ -16,5 +16,5 @@ public sealed class Collection : AuditEntity
 
     public User User { get; private set; } = null!;
 
-    public IEnumerable<CollectionItem> Items { get; private set; } = [];
+    public List<CollectionItem> Items { get; private set; } = [];
 }

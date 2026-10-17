@@ -38,6 +38,46 @@ public sealed class UserSynchronizationService(
         return (new UserResponse(user.Id, user.ExternalId, user.DisplayName, user.IsActive, user.UpdatedAt), status);
     }
 
+    public async Task<BulkSynchronizationResponse<BulkUserResult>> SynchronizeBulkAsync(
+        IReadOnlyList<SynchronizeUserRequest> requests,
+        CancellationToken cancellationToken)
+    {
+        var results = new List<BulkUserResult>();
+        var errors = new List<BulkRecordError>();
+        var created = 0;
+        var updated = 0;
+        var unchanged = 0;
+
+        foreach (var request in requests)
+        {
+            try
+            {
+                var result = await SynchronizeAsync(request, cancellationToken);
+                var status = result.Status.ToString();
+                results.Add(new BulkUserResult(result.User, status));
+                switch (result.Status)
+                {
+                    case SynchronizationStatus.Created: created++; break;
+                    case SynchronizationStatus.Updated: updated++; break;
+                    case SynchronizationStatus.Unchanged: unchanged++; break;
+                }
+            }
+            catch (Exception exception) when (exception is ArgumentException or InvalidOperationException or DbUpdateException)
+            {
+                errors.Add(new BulkRecordError(request.ExternalId, "USER_SYNC_FAILED", exception.Message));
+            }
+        }
+
+        return new BulkSynchronizationResponse<BulkUserResult>(
+            requests.Count,
+            created,
+            updated,
+            unchanged,
+            errors.Count,
+            results,
+            errors);
+    }
+
     public async Task<IReadOnlyList<UserResponse>> GetAsync(int page, int pageSize, CancellationToken cancellationToken)
     => await dbContext.Users
         .AsNoTracking()

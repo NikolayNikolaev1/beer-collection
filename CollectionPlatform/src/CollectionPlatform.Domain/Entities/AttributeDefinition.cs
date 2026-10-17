@@ -41,9 +41,9 @@ public sealed class AttributeDefinition : AuditEntity
 
     public bool IsFilterable { get; private set; }
 
-    public IEnumerable<AttributeValue> Values { get; private set; } = [];
+    public List<AttributeValue> Values { get; private set; } = [];
 
-    public IEnumerable<ItemAttributeValue> ItemValues { get; private set; } = [];
+    public List<ItemAttributeValue> ItemValues { get; private set; } = [];
 
     public void Update(string name, bool isRequired, bool isMultiple, bool isFilterable, bool isActive)
     {
@@ -51,6 +51,6 @@ public sealed class AttributeDefinition : AuditEntity
         IsRequired = isRequired;
         IsMultiple = isMultiple;
         IsFilterable = isFilterable;
-        Update();
+        SetActive(isActive);
     }
 }

@@ -16,11 +16,11 @@ public sealed class Tenant : AuditEntity
 
     public string? ExternalId { get; private set; }
 
-    public IEnumerable<ApiKey> ApiKeys { get; private set; } = [];
+    public List<ApiKey> ApiKeys { get; private set; } = [];
 
-    public IEnumerable<User> Users { get; private set; } = [];
+    public List<User> Users { get; private set; } = [];
 
-    public IEnumerable<Item> Items { get; private set; } = [];
+    public List<Item> Items { get; private set; } = [];
 
-    public IEnumerable<AttributeDefinition> AttributeDefinitions { get; private set; } = [];
+    public List<AttributeDefinition> AttributeDefinitions { get; private set; } = [];
 }

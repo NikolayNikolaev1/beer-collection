@@ -19,6 +19,19 @@ public sealed class UsersController(IUserSynchronizationService users) : Control
         return Ok(new UserSynchronizationResponse(result.User, result.Status.ToString()));
     }
 
+    [HttpPost("bulk")]
+    public async Task<ActionResult<BulkSynchronizationResponse<BulkUserResult>>> SynchronizeBulk(
+        BulkUserRequest request,
+        CancellationToken cancellationToken)
+    {
+        if (request.Users.Count is < 1 or > BulkLimits.MaximumBatchSize)
+        {
+            return Problem(statusCode: StatusCodes.Status400BadRequest, title: "Invalid batch size", detail: $"A batch must contain between 1 and {BulkLimits.MaximumBatchSize} users.");
+        }
+
+        return Ok(await users.SynchronizeBulkAsync(request.Users, cancellationToken));
+    }
+
     [HttpGet]
     [ProducesResponseType(typeof(PagedResponse<UserResponse>), StatusCodes.Status200OK)]
     public async Task<ActionResult<PagedResponse<UserResponse>>> Get(

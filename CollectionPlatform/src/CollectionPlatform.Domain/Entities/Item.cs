@@ -24,9 +24,9 @@ public sealed class Item : AuditEntity
 
     public string? Description { get; private set; }
 
-    public IEnumerable<ItemAttributeValue> AttributeValues { get; private set; } = [];
+    public List<ItemAttributeValue> AttributeValues { get; private set; } = [];
 
-    public IEnumerable<CollectionItem> CollectionItems { get; private set; } = [];
+    public List<CollectionItem> CollectionItems { get; private set; } = [];
 
     public void Synchronize(string name, string? description, bool isActive = true)
     {

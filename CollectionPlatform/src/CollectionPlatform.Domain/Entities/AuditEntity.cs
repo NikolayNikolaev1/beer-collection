@@ -26,6 +26,12 @@ public abstract class AuditEntity
     protected virtual void Update()
     {
         IsActive = true;
-        UpdatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTimeOffset.UtcNow;
+    }
+
+    protected void SetActive(bool isActive)
+    {
+        IsActive = isActive;
+        UpdatedAt = DateTimeOffset.UtcNow;
     }
 }

@@ -27,6 +27,6 @@ public sealed class AttributeValue : AuditEntity
     public void Update(string name, bool isActive)
     {
         Name = name.Require();
-        Update();
+        SetActive(isActive);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace CollectionPlatform.Domain.Entities;
+﻿using CollectionPlatform.Common.Extensions;
+
+namespace CollectionPlatform.Domain.Entities;
 
 public sealed class ItemAttributeValue : AuditEntity
 {
@@ -25,7 +27,7 @@ public sealed class ItemAttributeValue : AuditEntity
 
     public AttributeValue? AttributeValue { get; private set; }
 
-    public string? TextValue { get; set; }
+    public string? TextValue { get; private set; }
 
     public long? IntegerValue { get; set; }
 
@@ -34,4 +36,9 @@ public sealed class ItemAttributeValue : AuditEntity
     public bool? BooleanValue { get; set; }
 
     public DateOnly? DateValue { get; set; }
+
+    public void SetText(string? value)
+    {
+        this.TextValue = value.Require();
+    }
 }

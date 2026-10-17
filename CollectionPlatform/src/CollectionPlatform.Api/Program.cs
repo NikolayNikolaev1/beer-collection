@@ -17,6 +17,8 @@ builder.Services.AddDbContext<CollectionPlatformDbContext>(options =>
 builder.Services.AddScoped<IApiKeyValidator, ApiKeyValidator>();
 builder.Services.AddScoped<IUserSynchronizationService, UserSynchronizationService>();
 builder.Services.AddScoped<IAttributeService, AttributeService>();
+builder.Services.AddScoped<IItemSynchronizationService, ItemSynchronizationService>();
+builder.Services.AddScoped<ICollectionService, CollectionService>();
 builder.Services
 	.AddAuthentication(ApiKeyAuthenticationHandler.SchemeName)
 	.AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(ApiKeyAuthenticationHandler.SchemeName, _ => { });

@@ -13,5 +13,6 @@ public sealed record UserResponse(Guid Id, string ExternalId, string? DisplayNam
 public interface IUserSynchronizationService
 {
     Task<(UserResponse User, SynchronizationStatus Status)> SynchronizeAsync(SynchronizeUserRequest request, CancellationToken cancellationToken);
+    Task<BulkSynchronizationResponse<BulkUserResult>> SynchronizeBulkAsync(IReadOnlyList<SynchronizeUserRequest> requests, CancellationToken cancellationToken);
     Task<IReadOnlyList<UserResponse>> GetAsync(int page, int pageSize, CancellationToken cancellationToken);
 }

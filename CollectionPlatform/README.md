@@ -37,6 +37,14 @@ dotnet run --project src/CollectionPlatform.Api
 
 Swagger is available at `/swagger` in development.
 
+Run the test suite:
+
+```powershell
+dotnet test CollectionPlatform.slnx
+```
+
+The integration suite creates a unique SQL Server LocalDB database per fixture, calls `EnsureCreated` for the test schema, and deletes the database afterward. It covers tenant query isolation, API-key revocation, item synchronization/validation, and collection acquisition idempotency. Production deployment remains responsible for its database lifecycle; no migration files are generated here.
+
 ## Current API onboarding
 
 Use the provisioned key on every integration request:
@@ -71,7 +79,59 @@ Content-Type: application/json
 }
 ```
 
-Attribute definitions and values are tenant-scoped. The next implementation slice adds item synchronization and collection acquisition/retrieval on top of these contracts.
+Synchronize a generic item with typed attributes:
+
+```http
+POST /api/v1/items
+Content-Type: application/json
+
+{
+  "externalId": "beer-123",
+  "name": "Chimay Blue",
+  "attributes": {
+    "country": "BE",
+    "alcohol": 9.0
+  }
+}
+```
+
+Bulk synchronization accepts at most 500 records and partially succeeds. Valid records are committed independently; invalid records are returned in `errors` without rolling back other records:
+
+```http
+POST /api/v1/items/bulk
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "externalId": "beer-123",
+      "name": "Chimay Blue",
+      "attributes": { "country": "BE" }
+    }
+  ]
+}
+```
+
+The user equivalent is `POST /api/v1/users/bulk`. Both responses include `total`, `created`, `updated`, `unchanged`, `failed`, successful `results`, and per-record `errors`.
+
+When an order is fulfilled, record a retry-safe acquisition:
+
+```http
+POST /api/v1/collections/acquisitions
+Content-Type: application/json
+
+{
+  "userExternalId": "user-123",
+  "itemExternalId": "beer-123",
+  "externalEventId": "order-10025-line-1",
+  "quantity": 1,
+  "source": "order"
+}
+```
+
+Repeating the same `externalEventId` is a no-op. A new event identifier increments the current quantity. Retrieve the collection through `GET /api/v1/users/{externalUserId}/collection?page=1&pageSize=50`.
+
+Attribute definitions and values are tenant-scoped. Unknown attributes, invalid typed values, inactive definitions, and inactive enumeration values are rejected. Bulk synchronization and SQL Server integration fixtures remain next in the implementation sequence.
 
 ## Architecture decisions
 
