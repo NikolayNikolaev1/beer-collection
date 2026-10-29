@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>{{ 'auth.register.title' | translate }}</h2>
+<mat-dialog-content
+  ><form [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline"
+      ><mat-label>{{ 'auth.register.workspaceName' | translate }}</mat-label
+      ><input matInput formControlName="tenantName" /><mat-error
+        >{{ 'auth.register.workspaceRequired' | translate }}</mat-error
+      ></mat-form-field
+    ><mat-form-field appearance="outline"
+      ><mat-label>{{ 'auth.register.email' | translate }}</mat-label><input matInput type="email" formControlName="email" /><mat-error
+        >{{ 'auth.register.emailInvalid' | translate }}</mat-error
+      ></mat-form-field
+    ><mat-form-field appearance="outline"
+      ><mat-label>{{ 'auth.register.password' | translate }}</mat-label
+      ><input matInput type="password" formControlName="password" /><mat-hint
+        >{{ 'auth.register.passwordHint' | translate }}</mat-hint
+      ></mat-form-field
+    >
+    <p class="form-error" *ngIf="error">{{ error }}</p>
+    <button mat-flat-button color="primary" type="submit" [disabled]="busy() || form.invalid">
+      {{ busy() ? ('auth.register.busy' | translate) : ('auth.register.submit' | translate) }}
+    </button>
+  </form></mat-dialog-content
+><mat-dialog-actions align="end"
+  ><button mat-button mat-dialog-close>{{ 'auth.register.cancel' | translate }}</button></mat-dialog-actions
+>

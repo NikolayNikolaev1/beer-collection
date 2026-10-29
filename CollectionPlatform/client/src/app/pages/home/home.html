@@ -1,0 +1,26 @@
+<main class="landing" *ngIf="!auth.isAuthenticated()">
+  <section class="landing-copy">
+    <span class="eyebrow">{{ 'home.eyebrow' | translate }}</span>
+    <h1>{{ 'home.title' | translate }}<br /><em>{{ 'home.titleAccent' | translate }}</em></h1>
+    <p>
+      {{ 'home.description' | translate }}
+    </p>
+    <div class="actions">
+      <button mat-flat-button color="primary" (click)="register()">{{ 'home.createWorkspace' | translate }}</button
+      ><button mat-stroked-button (click)="login()">{{ 'home.signIn' | translate }}</button>
+    </div>
+    <button class="text-action" mat-button (click)="forgot()">{{ 'home.resetPrompt' | translate }}</button>
+  </section>
+  <aside class="landing-art">
+    <div class="art-label">{{ 'home.fieldNote' | translate }}</div>
+    <div class="bottle bottle-one">
+      <span>{{ 'home.collectionLabel' | translate }}</span>
+    </div>
+    <div class="bottle bottle-two">
+      <span>{{ 'home.smallBatch' | translate }}</span>
+    </div>
+    <div class="art-caption">
+      {{ 'home.caption' | translate }}<br /><strong>{{ 'home.captionAccent' | translate }}</strong>
+    </div>
+  </aside>
+</main>

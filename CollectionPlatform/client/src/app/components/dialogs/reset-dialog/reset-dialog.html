@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>{{ 'auth.reset.title' | translate }}</h2>
+<mat-dialog-content
+  ><form [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline"
+      ><mat-label>{{ 'auth.reset.password' | translate }}</mat-label
+      ><input matInput type="password" formControlName="password" /><mat-hint
+        >{{ 'auth.reset.passwordHint' | translate }}</mat-hint
+      ></mat-form-field
+    >
+    <p class="form-error" *ngIf="error">{{ error }}</p>
+    <button mat-flat-button color="primary" type="submit" [disabled]="busy || form.invalid">
+      {{ busy() ? ('auth.reset.busy' | translate) : ('auth.reset.submit' | translate) }}
+    </button>
+  </form></mat-dialog-content
+><mat-dialog-actions align="end"
+  ><button mat-button mat-dialog-close>{{ 'auth.reset.close' | translate }}</button></mat-dialog-actions
+>

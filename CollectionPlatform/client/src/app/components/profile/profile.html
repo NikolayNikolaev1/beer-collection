@@ -1,0 +1,22 @@
+<main class="profile-page">
+  <div class="page-heading">
+    <span class="eyebrow">{{ 'profile.eyebrow' | translate }}</span>
+    <h1>{{ 'profile.title' | translate }}</h1>
+    <p>{{ 'profile.copy' | translate }}</p>
+  </div>
+  <section class="profile-panel">
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <mat-form-field appearance="outline"
+        ><mat-label>{{ 'profile.workspaceName' | translate }}</mat-label
+        ><input matInput formControlName="tenantName" /></mat-form-field
+      ><mat-form-field appearance="outline"
+        ><mat-label>{{ 'profile.email' | translate }}</mat-label><input matInput type="email" formControlName="email"
+      /></mat-form-field>
+      <p class="success" *ngIf="message">{{ message }}</p>
+      <p class="form-error" *ngIf="error">{{ error }}</p>
+      <button mat-flat-button color="primary" type="submit" [disabled]="busy || form.invalid">
+        {{ busy ? ('profile.saving' | translate) : ('profile.save' | translate) }}
+      </button>
+    </form>
+  </section>
+</main>

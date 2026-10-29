@@ -1,0 +1,36 @@
+.profile-page {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 72px 7vw;
+}
+.page-heading {
+  margin-bottom: 32px;
+}
+.eyebrow {
+  color: #ad4b2f;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+}
+.page-heading h1 {
+  margin: 10px 0;
+  font-size: clamp(2rem, 4vw, 3.3rem);
+}
+.page-heading p {
+  color: #5d686b;
+}
+.profile-panel {
+  max-width: 560px;
+  border-top: 1px solid #ccd6d2;
+  padding-top: 28px;
+}
+.profile-panel form {
+  display: grid;
+  gap: 14px;
+}
+.success {
+  color: #236b4e;
+}
+.form-error {
+  color: #b32929;
+}

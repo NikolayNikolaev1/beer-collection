@@ -1,0 +1,35 @@
+{
+  "app": { "title": "Collection Platform" },
+  "nav": {
+    "brand": "COLLECTION",
+    "brandAccent": "PLATFORM",
+    "profile": "My profile",
+    "signOut": "Sign out",
+    "languageLabel": "Language",
+    "english": "English",
+    "bulgarian": "Bulgarian",
+    "switchLanguage": "Switch language"
+  },
+  "home": {
+    "eyebrow": "A CLEARER WAY TO COLLECT",
+    "title": "Your collection,",
+    "titleAccent": "beautifully organized.",
+    "description": "Bring every bottle, story, and discovery into one calm workspace built for people who care about the details.",
+    "createWorkspace": "Create your workspace",
+    "signIn": "Sign in",
+    "resetPrompt": "Need to reset your password?",
+    "fieldNote": "FIELD NOTE / 001",
+    "collectionLabel": "COLLECTION\nNO. 01",
+    "smallBatch": "SMALL\nBATCH",
+    "caption": "Catalog the good stuff.",
+    "captionAccent": "Remember why it matters."
+  },
+  "auth": {
+    "login": { "title": "Welcome back", "copy": "Sign in to manage your collection workspace.", "email": "Email", "password": "Password", "emailInvalid": "Enter a valid email.", "passwordRequired": "Password is required.", "submit": "Sign in", "busy": "Signing in...", "forgot": "Forgot password?", "cancel": "Cancel" },
+    "register": { "title": "Create your workspace", "workspaceName": "Workspace name", "email": "Email", "password": "Password", "workspaceRequired": "Workspace name is required.", "emailInvalid": "Enter a valid email.", "passwordHint": "At least 8 characters.", "submit": "Create workspace", "busy": "Creating...", "cancel": "Cancel" },
+    "forgot": { "title": "Reset your password", "copy": "Enter your email and we will send reset instructions if an account exists.", "email": "Email", "emailInvalid": "Enter a valid email.", "submit": "Send instructions", "busy": "Sending...", "success": "If an account exists, reset instructions are on their way.", "close": "Close" },
+    "reset": { "title": "Choose a new password", "password": "New password", "passwordHint": "At least 8 characters.", "submit": "Reset password", "busy": "Saving...", "close": "Close" }
+  },
+  "profile": { "eyebrow": "ACCOUNT SETTINGS", "title": "My profile", "copy": "Keep your workspace identity and sign-in details current.", "workspaceName": "Workspace name", "email": "Email address", "save": "Save changes", "saving": "Saving...", "updated": "Profile updated." },
+  "errors": { "generic": "Something went wrong. Please try again.", "network": "We could not reach the platform. Check your connection and try again.", "unauthorized": "Your session has expired. Please sign in again.", "profileUpdate": "Unable to update profile." }
+}

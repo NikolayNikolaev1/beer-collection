@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>{{ 'auth.forgot.title' | translate }}</h2>
+<mat-dialog-content
+  ><p class="dialog-copy">
+    {{ 'auth.forgot.copy' | translate }}
+  </p>
+  @if (!sent()) {
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <mat-form-field appearance="outline"
+        ><mat-label>{{ 'auth.forgot.email' | translate }}</mat-label
+        ><input matInput type="email" formControlName="email" /><mat-error
+          >{{ 'auth.forgot.emailInvalid' | translate }}</mat-error
+        ></mat-form-field
+      >
+      <p class="form-error" *ngIf="error">{{ error }}</p>
+      <button mat-flat-button color="primary" type="submit" [disabled]="busy() || form.invalid">
+        {{ busy() ? ('auth.forgot.busy' | translate) : ('auth.forgot.submit' | translate) }}
+      </button>
+    </form>
+  }
+  <p *ngIf="sent" class="dialog-copy">
+    {{ 'auth.forgot.success' | translate }}
+  </p></mat-dialog-content
+><mat-dialog-actions align="end"
+  ><button mat-button mat-dialog-close>{{ 'auth.forgot.close' | translate }}</button></mat-dialog-actions
+>

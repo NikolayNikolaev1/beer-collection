@@ -2,11 +2,21 @@ namespace CollectionPlatform.Infrastructure;
 
 using Application;
 using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 public sealed class CollectionPlatformDbContext(
     DbContextOptions<CollectionPlatformDbContext> options,
-    ITenantContext tenantContext) : DbContext(options)
+    ITenantContext tenantContext) : IdentityDbContext<
+        Tenant,
+        IdentityRole<Guid>,
+        Guid,
+        IdentityUserClaim<Guid>,
+        IdentityUserRole<Guid>,
+        IdentityUserLogin<Guid>,
+        IdentityRoleClaim<Guid>,
+        IdentityUserToken<Guid>>(options)
 {
     public DbSet<Tenant> Tenants => Set<Tenant>();
     public DbSet<ApiKey> ApiKeys => Set<ApiKey>();
@@ -18,12 +28,14 @@ public sealed class CollectionPlatformDbContext(
     public DbSet<Collection> Collections => Set<Collection>();
     public DbSet<CollectionItem> CollectionItems => Set<CollectionItem>();
     public DbSet<CollectionAcquisition> CollectionAcquisitions => Set<CollectionAcquisition>();
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CollectionPlatformDbContext).Assembly);
 
-        modelBuilder.Entity<Tenant>().HasQueryFilter(entity => entity.Id == tenantContext.TenantId);
+        modelBuilder.Entity<RefreshToken>().HasQueryFilter(entity => entity.TenantId == tenantContext.TenantId);
         modelBuilder.Entity<ApiKey>().HasQueryFilter(entity => entity.TenantId == tenantContext.TenantId);
         modelBuilder.Entity<User>().HasQueryFilter(entity => entity.TenantId == tenantContext.TenantId);
         modelBuilder.Entity<Item>().HasQueryFilter(entity => entity.TenantId == tenantContext.TenantId);

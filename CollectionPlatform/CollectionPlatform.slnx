@@ -1,6 +1,6 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="CollectionPlatform.Common/CollectionPlatform.Common.csproj" Id="8bd9b6de-5118-487f-9199-36a84140a3d9" />
+    <Project Path="CollectionPlatform.Common/CollectionPlatform.Common.csproj" Id="0aecae08-36d1-4514-ac6d-d17ed0b29ddd" />
     <Project Path="src/CollectionPlatform.Api/CollectionPlatform.Api.csproj" />
     <Project Path="src/CollectionPlatform.Application/CollectionPlatform.Application.csproj" />
     <Project Path="src/CollectionPlatform.Domain/CollectionPlatform.Domain.csproj" />

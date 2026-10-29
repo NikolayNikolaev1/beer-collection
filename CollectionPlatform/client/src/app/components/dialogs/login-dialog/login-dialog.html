@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>{{ 'auth.login.title' | translate }}</h2>
+<mat-dialog-content
+  ><p class="dialog-copy">{{ 'auth.login.copy' | translate }}</p>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline"
+      ><mat-label>{{ 'auth.login.email' | translate }}</mat-label><input matInput type="email" formControlName="email" /><mat-error
+        >{{ 'auth.login.emailInvalid' | translate }}</mat-error
+      ></mat-form-field
+    ><mat-form-field appearance="outline"
+      ><mat-label>{{ 'auth.login.password' | translate }}</mat-label
+      ><input matInput type="password" formControlName="password" /><mat-error
+        >{{ 'auth.login.passwordRequired' | translate }}</mat-error
+      ></mat-form-field
+    >
+    <p class="form-error" *ngIf="error">{{ error }}</p>
+    <button mat-flat-button color="primary" type="submit" [disabled]="busy() || form.invalid">
+      {{ busy() ? ('auth.login.busy' | translate) : ('auth.login.submit' | translate) }}
+    </button>
+  </form></mat-dialog-content
+><mat-dialog-actions align="end"
+  ><button mat-button type="button" (click)="closeForgot()">{{ 'auth.login.forgot' | translate }}</button
+  ><button mat-button mat-dialog-close>{{ 'auth.login.cancel' | translate }}</button></mat-dialog-actions
+>
